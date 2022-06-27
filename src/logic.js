@@ -413,7 +413,9 @@ function runGame(plans, Display) {
         startLevel(n);
         
       else if (n < plans.length - 1)
-        startLevel(n + 1);
+	pjs.setcookie(`level = ${n + 1}`, "99999", "/");
+	startLevel(pjs.getcookie("level"));
+        //startLevel(n + 1);
       else{
 		 document.body.innerHTML='<div class="won"><h1>YOU WON !<h1></div>';
 	  }
