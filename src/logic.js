@@ -441,16 +441,36 @@ function checkCookie() {
   }
 }
 
+
 function runGame(plans, Display) {
   function startLevel(n) {
    
     runLevel(new Level(plans[n]), Display, function(status) {
       if (status == "lost")
-        startLevel(n);
+	  d.setTime(d.getTime() + (999*24*60*60*1000));
+	  let expires = "expires=" + d.toUTCString();
+	  document.cookie = 'level' + "=" + n + ";" + expires + ";path=/";
+          startLevel(n);
         
       else if (n < plans.length - 1)
-        etCookie("level", n + 1, 999);
-        startLevel(getCookie("level"));
+	  d.setTime(d.getTime() + (999*24*60*60*1000));
+	  let expires = "expires=" + d.toUTCString();
+	  f = n + 1
+	  document.cookie = 'level' + "=" + f + ";" + expires + ";path=/";
+	  let cname = 'leve'
+	  let name = cname + "=";
+	  let decodedCookie = decodeURIComponent(document.cookie);
+	  let ca = decodedCookie.split(';');
+	  for(let i = 0; i < ca.length; i++) {
+	    let c = ca[i];
+	    while (c.charAt(0) == ' ') {
+	      c = c.substring(1);
+	    }
+	    if (c.indexOf(name) == 0) {
+	      var declevel = c.substring(name.length, c.length);
+	    }
+	  };
+          startLevel(declevel);
       else{
 		 document.body.innerHTML='<div class="won"><h1>YOU WON !<h1></div>';
 	  }
@@ -458,5 +478,6 @@ function runGame(plans, Display) {
   }
   startLevel(0);
 }
+
 
 runGame(LEVELS, DOMDisplay);
