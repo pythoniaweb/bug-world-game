@@ -449,7 +449,7 @@ function runGame(plans, Display) {
         startLevel(n);
         
       else if (n < plans.length - 1)
-	setCookie("level", n + 1, 999);
+        etCookie("level", n + 1, 999);
         startLevel(getCookie("level"));
       else{
 		 document.body.innerHTML='<div class="won"><h1>YOU WON !<h1></div>';
