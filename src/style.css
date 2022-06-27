@@ -1,6 +1,8 @@
 .background    { background: rgb(0, 191, 181);
                  table-layout: fixed;
-                 border-spacing: 0;              }
+                 border-spacing: 0;              
+		 border-style: dotted; 
+}
 .background td { padding: 0;                     }
 .lava          { background: rgb(255, 0, 51); }
 .enemy1          { background: rgb(255, 0, 174); }
