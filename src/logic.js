@@ -406,21 +406,64 @@ function runLevel(level, Display, andThen) {
   });
 }
 
+function setCookie(cname,cvalue,exdays) {
+  const d = new Date();
+  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+  let expires = "expires=" + d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(';');
+  for(let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+function checkCookie() {
+  let user = getCookie("level");
+  if (user != "") {
+    
+  } else {
+     user = prompt("Please enter your name:","");
+     if (user != "" && user != null) {
+       setCookie("username", user, 30);
+     }
+  }
+}
+
 function runGame(plans, Display) {
   function startLevel(n) {
    
     runLevel(new Level(plans[n]), Display, function(status) {
-      if (status == "lost")
-        startLevel(n);
+      if (status == "lost") {
+        startLevel(getCookie(level));
         
-      else if (n < plans.length - 1)
-        startLevel(n + 1);
-      else{
+      } else if (n < plans.length - 1) {
+	setCookie("level", n + 1, 999);
+        startLevel(getCookie(level));
+      } else{
 		 document.body.innerHTML='<div class="won"><h1>YOU WON !<h1></div>';
 	  }
     });
   }
-  startLevel(0);
+  let user = getCookie("level");
+  if (user != "") {
+    startLevel(getCookie(level));
+  } else {
+     if (user != "" && user != null) {
+       setCookie("level", 0, 999);
+     }
+  }
 }
 
 
